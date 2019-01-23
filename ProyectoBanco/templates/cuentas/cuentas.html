@@ -1,0 +1,95 @@
+{% extends "../index.html" %}
+
+{% block body %}
+
+<nav>
+    <div class="nav-wrapper z-depth-2 badge black">
+        <a href="#!" class="brand-logo">Lista de Cuentas</a>
+        <ul class="right hide-on-med-and-down">
+            <li><a href="nuevaCuenta"><i class="material-icons left">playlist_add</i>Ingresar Nueva Cuenta</a></li>
+        </ul>
+    </div>
+</nav>
+<div class="row">
+    <div class="col s12">
+        <div class="card z-depth-3">
+            <div class="card-content">
+                <span class="card-title">{{mensaje}}</span>
+                <table >
+
+                    <input onchange="recibir()" id="txt_buscarCuenta" type="text" style="width: 1000px" placeholder="Ingrese numero de cedula del cliente">
+                </table>
+                        <div>
+                            <th ><a id="boton_buscar" style="width: 1000px" class="btn btn-warning" ><i class="fab fa-sistrix " > Buscar</i></a></th>
+                        </div>
+                <script>
+                    function recibir() {
+                        var valor = document.getElementById("txt_buscarCuenta").value;
+                        document.getElementById("boton_buscar").href = 'buscarCuenta?txt_buscarCuenta='+valor+'';
+                    }
+                </script>
+                <table class="highlight responsive-table">
+                    <thead>
+                        <tr>
+                            <th>Numero</th>
+                            <th>Estado</th>
+                            <th>Saldo</th>
+                            <th>Cliente</th>
+                            <th>Tipo de Cuenta</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in cuentas %}
+                        <tr>
+
+                            <td>{{item.numero}}</td>
+                            <td>{{item.estado}}</td>
+                            <td>{{item.saldo}}</td>
+                            <td>{{ item.cliente }}</td>
+
+                            {% if item.tipoCuenta == 'ahorros' %}
+                            <td>Ahorro</td>
+                            {% endif %}
+                            {% if item.tipoCuenta == 'juvenil' %}
+                            <td>Juvenil</td>
+                            {% endif %}
+                            {% if item.tipoCuenta == 'basica' %}
+                            <td>Basica</td>
+                            {% else %}
+                            <td>Corriente</td>
+                            {% endif %}
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="card-action">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+{% block js %}
+<script>
+    var eliminar = function(id){
+        $.ajax({
+            url: "eliminar",
+            method: "POST",
+            data: { id : id }
+        }).success(function( msj ) {
+            if(msj == "eliminado"){
+
+            }
+            if(msj == "no eliminado"){
+
+            }
+            if(msj == "perdido"){
+
+            }
+        });
+    }
+</script>
+{% endblock %}
